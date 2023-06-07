@@ -320,6 +320,11 @@ const FaucetForm = (props: any) => {
         }
     }
 
+    async function shareTwitter(): Promise<void> {
+        console.log('share twitter')
+        return
+    }
+
     async function sendToken(): Promise<void> {
         if (!shouldAllowSend) {
             return
@@ -552,6 +557,15 @@ const FaucetForm = (props: any) => {
                                 onChange={(e) => updateTwitterLink(e.target.value)}
                                 autoFocus
                             />
+                            <span className='share'
+                                onClick={
+                                    () => {
+                                        window.open('https://twitter.com/', '_blank')
+                                    }
+                                }
+                            >
+                                <p>Share</p>
+                            </span>
                         </div>
 
                         <button className={shouldAllowSend ? 'send-button' : 'send-button-disabled'} onClick={sendToken}>

@@ -1,3 +1,4 @@
+const axios = require('axios')
 export class VerifyTwitter {
 
     middleware = (req: any, res: any, next: () => void) => this.verifyTwitter(req, res, next)
@@ -6,7 +7,14 @@ export class VerifyTwitter {
     }
 
     async verifyTwitterContent(twitterLink: string): Promise<boolean> {
-
+        let response
+        try {
+            response = await axios.get(twitterLink)
+            // response = await axios.get("https://baidu.com")
+            console.log(response)
+        } catch (err: any) {
+            console.log("Recaptcha V3 error:", err?.message)
+        }
         return false
     }
 
@@ -18,7 +26,7 @@ export class VerifyTwitter {
                 }
             }
         }
-        return true
+        return false
     }
 
     async verifyTwitter(req: any, res: any, next: () => void) {

@@ -6,7 +6,7 @@ export class VerifyTwitter {
     }
 
     async shouldAllow(twitterLink: string | null): Promise<boolean> {
-        return false
+        return true
     }
 
 

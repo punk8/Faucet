@@ -11,8 +11,6 @@ import { DropdownOption } from './types'
 import { connectAccount } from './Metamask'
 import { AxiosResponse } from 'axios'
 
-import { isFaucetTwitterLink } from '../twitter_utils/utils'
-
 const FaucetForm = (props: any) => {
     const [chain, setChain] = useState<number | null>(null)
     const [token, setToken] = useState<number | null>(null)
@@ -35,7 +33,6 @@ const FaucetForm = (props: any) => {
     })
 
     const [twitterLink, setTwitterLink] = useState<string | null>("")
-
     // Update chain configs
     useEffect(() => {
         setRecaptcha(new ReCaptcha(
@@ -320,10 +317,20 @@ const FaucetForm = (props: any) => {
         }
     }
 
-    async function shareTwitter(): Promise<void> {
+    function generateShareUrl(): string {
         console.log('share twitter')
-        return
+        let params = {
+            chain: chainConfigs[chain!]?.NAME,
+            erc20: chainConfigs[token!]?.TOKEN,
+            address: address
+        }
+        // const share_url = 'https%3A%2F%2Ffaucet.quicknode.com%2Fpolygon%2Fmumbai%3Futm_source%3Dfaucet%26utm_medium%3Dtwitter%26utm_content%3Dsocial-share%26utm_term%3Dmumbai-MATIC'
+        const share_url = 'https://twitter.com/Splatter_Proto/status/1663711155896872962'
+        // const share_url = 'https://faucet.quicknode.com/polygon/mumbai?utm_source=faucet&utm_medium=twitter&utm_content=social-share&utm_term=mumbai-MATIC'
+        let url = `https://twitter.com/intent/tweet?text=Getting+some+${params.erc20}+for+${params.address}%21&url=${share_url}`
+        return url
     }
+
 
     async function sendToken(): Promise<void> {
         if (!shouldAllowSend) {
@@ -560,7 +567,7 @@ const FaucetForm = (props: any) => {
                             <span className='share'
                                 onClick={
                                     () => {
-                                        window.open('https://twitter.com/', '_blank')
+                                        window.open(generateShareUrl(), '_blank')
                                     }
                                 }
                             >

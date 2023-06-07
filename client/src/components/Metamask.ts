@@ -5,10 +5,10 @@ declare global {
 }
 
 export const addNetwork = async (config: any): Promise<void> => {
-    if(!config) {
+    if (!config) {
         return
     }
-    if(window.ethereum == undefined) {
+    if (window.ethereum == undefined) {
         window.open('https://metamask.io/download', '_blank')
     }
 
@@ -27,14 +27,14 @@ export const addNetwork = async (config: any): Promise<void> => {
         }]
     }).catch((error: any): void => {
         console.log(error)
-    })      
+    })
 }
 
 export const addAsset = async (config: any): Promise<void> => {
-    if(!config) {
+    if (!config) {
         return
     }
-    if(window.ethereum == undefined) {
+    if (window.ethereum == undefined) {
         window.open('https://metamask.io/download', '_blank')
     }
 
@@ -50,11 +50,11 @@ export const addAsset = async (config: any): Promise<void> => {
         }
     }).catch((error: any): void => {
         console.log(error)
-    })  
+    })
 }
 
 export const connectAccount = async (updateAddress: any, showPopup = true) => {
-    if(window.ethereum == undefined) {
+    if (window.ethereum == undefined) {
         showPopup && window.open('https://metamask.io/download', '_blank')
         return
     }
@@ -79,12 +79,12 @@ export const connectAccount = async (updateAddress: any, showPopup = true) => {
 }
 
 async function handleConnection(accounts: any, showPopup: boolean) {
-    if(accounts.length === 0) {
-        if(showPopup) {
+    if (accounts.length === 0) {
+        if (showPopup) {
             try {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
                 return accounts
-            } catch(err) {
+            } catch (err) {
                 console.log("Request denied!")
             }
         }

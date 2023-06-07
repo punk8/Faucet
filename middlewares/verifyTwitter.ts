@@ -13,7 +13,7 @@ export class VerifyTwitter {
             // response = await axios.get("https://baidu.com")
             console.log(response)
         } catch (err: any) {
-            console.log("Recaptcha V3 error:", err?.message)
+            console.log("verifyTwitterContent error:", err?.message)
         }
         return false
     }

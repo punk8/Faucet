@@ -57,7 +57,7 @@ const FaucetForm = (props: any) => {
 
     // Make REQUEST button disabled if either address is not valid or balance is low
     useEffect(() => {
-        if (address && isFaucetTwitterLink(twitterLink)) {
+        if (address && twitterLink) {
             console.log("balance", balance)
             console.log("calculate", calculateBaseUnit(chainConfigs[token!]?.DRIP_AMOUNT, chainConfigs[token!]?.DECIMALS))
             if (BigInt(balance) > calculateBaseUnit(chainConfigs[token!]?.DRIP_AMOUNT, chainConfigs[token!]?.DECIMALS)) {
@@ -340,7 +340,8 @@ const FaucetForm = (props: any) => {
                 token,
                 v2Token,
                 chain,
-                erc20
+                erc20,
+                twitterLink
             })
             data = response?.data
         } catch (err: any) {

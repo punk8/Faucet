@@ -7,9 +7,9 @@ import './App.css'
 function App() {
   return (
     <div className="app">
-      <FaucetForm axios = {axios} config = {config}/>
+      <FaucetForm axios={axios} config={config} />
 
-      <Contribute/>
+      {/* <Contribute/> */}
     </div>
   )
 }

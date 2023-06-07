@@ -12,7 +12,7 @@
     "evmchains": [
         {
             "ID": "M",
-            "NAME": "MUMBAI",
+            "NAME": "Polygon Mumbai",
             "TOKEN": "MATIC",
             "RPC": "https://endpoints.omniatech.io/v1/matic/mumbai/public",
             "CHAINID": 80001,

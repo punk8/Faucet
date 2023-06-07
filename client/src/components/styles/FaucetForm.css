@@ -162,7 +162,8 @@ a {
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-size: 10px
+    font-size: 12px;
+    font-weight: bold
 }
 
 .button-container {

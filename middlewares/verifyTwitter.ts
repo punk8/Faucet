@@ -1,5 +1,5 @@
 const axios = require('axios')
-// const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer');
 
 export class VerifyTwitter {
 
@@ -9,16 +9,38 @@ export class VerifyTwitter {
 
     }
 
+
+
+
+
     async searchTwitter(url: string) {
-        // const options = { headless: false }
-        // const browser = await puppeteer.launch(options);
-        // const page = await browser.newPage();
-        // // url = 'https://www.baidu.com'
-        // await page.goto(url)
-        // // resolve time
-        // // *[@id="react-root"]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/article/div/div/div[3]/div[4]/div/div[1]/div/div[1]/a/time
-        // const xpath = '//*[@id="react-root"]//*/time'
-        // // const searchTime = await page.$x(xpath);
+        const options = { headless: false }
+        const browser = await puppeteer.launch(options);
+        const page = await browser.newPage();
+        // url = 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section'
+        await page.goto(url)
+        await page.setViewport({
+            width: 1200,
+            height: 800
+        });
+        const xpath = '//time'
+
+        let postTime = await page.$x(xpath);
+        console.log("postTime", postTime)
+        postTime = null
+
+        while (postTime == null || postTime.length == 0) {
+            await page.evaluate(() => {
+                window.scrollTo(0, 200);
+            });
+            postTime = await page.$x(xpath);
+        }
+
+        const text = await page.evaluate((el: { dateTime: any; }) => {
+            return el.dateTime;
+        }, postTime[0]);
+
+        console.log("postTime", text)
         // await page.waitForSelector(xpath);
         // console.log("searchTime")
         // try {
@@ -34,7 +56,7 @@ export class VerifyTwitter {
         let response
         try {
             await this.searchTwitter(twitterLink)
-            response = await axios.get(twitterLink)
+            // response = await axios.get(twitterLink)
             // response = await axios.get("https://baidu.com")
             console.log(response)
         } catch (err: any) {

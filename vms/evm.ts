@@ -104,11 +104,11 @@ export default class EVM {
     async setupTransactionType(): Promise<void> {
         try {
             const baseFee = (await this.web3.eth.getBlock('latest')).baseFeePerGas
-            if(baseFee == undefined) {
+            if (baseFee == undefined) {
                 this.LEGACY = true
             }
             this.error = false
-        } catch(err: any) {
+        } catch (err: any) {
             this.error = true
             this.log.error(err.message)
         }
@@ -120,13 +120,13 @@ export default class EVM {
         id: string | undefined,
         cb: (param: SendTokenResponse) => void
     ): Promise<void> {
-        if(this.blockFaucetDrips) {
-            cb({ status: 400, message: "Faucet is getting started! Please try after sometime"})
+        if (this.blockFaucetDrips) {
+            cb({ status: 400, message: "Faucet is getting started! Please try after sometime" })
             return
         }
 
-        if(this.error) {
-            cb({ status: 400, message: "Internal RPC error! Please try after sometime"})
+        if (this.error) {
+            cb({ status: 400, message: "Internal RPC error! Please try after sometime" })
             return
         }
 
@@ -147,9 +147,9 @@ export default class EVM {
         let amount: BN = this.DRIP_AMOUNT
 
         // If id is provided, then it is ERC20 token transfer, so update the amount
-        if(this.contracts.get(id)) {
+        if (this.contracts.get(id)) {
             const dripAmount: number = this.contracts.get(id).config.DRIP_AMOUNT
-            if(dripAmount) {
+            if (dripAmount) {
                 amount = calculateBaseUnit(dripAmount.toString(), this.contracts.get(id).config.DECIMALS || 18)
             }
         }
@@ -162,13 +162,13 @@ export default class EVM {
         const waitingForNonce = setInterval(async () => {
             if (this.hasNonce.get(requestId) != undefined) {
                 clearInterval(waitingForNonce)
-                
+
                 const nonce: number | undefined = this.hasNonce.get(requestId)
                 this.hasNonce.set(requestId, undefined)
-                
+
                 const { txHash } = await this.getTransaction(receiver, amount, nonce, id)
-                
-                if(txHash) {
+
+                if (txHash) {
                     cb({
                         status: 200,
                         message: `Transaction successful on ${this.NAME}!`,
@@ -180,12 +180,12 @@ export default class EVM {
                         message: `Transaction failed on ${this.NAME}! Please try again.`
                     })
                 }
-            } else if(this.hasError.get(receiver) != undefined) {
+            } else if (this.hasError.get(receiver) != undefined) {
                 clearInterval(waitingForNonce)
-                
+
                 const errorMessage = this.hasError.get(receiver)!
                 this.hasError.set(receiver, undefined)
-                
+
                 cb({
                     status: 400,
                     message: errorMessage
@@ -214,7 +214,7 @@ export default class EVM {
     }
 
     getBalance(id?: string): BN {
-        if(id && this.contracts.get(id)) {
+        if (id && this.contracts.get(id)) {
             return this.getERC20Balance(id)
         } else {
             return this.balance
@@ -249,16 +249,16 @@ export default class EVM {
             this.balance = new BN(this.balance)
 
             this.error && this.log.info("RPC server recovered!")
-            this.error = false 
+            this.error = false
 
             this.isFetched = true
             this.isUpdating = false
             this.recalibrate = false
 
-            while(this.waitArr.length != 0) {
+            while (this.waitArr.length != 0) {
                 this.putInQueue(this.waitArr.shift())
             }
-        } catch(err: any) {
+        } catch (err: any) {
             this.isUpdating = false
             this.error = true
             this.log.error(err.message)
@@ -267,13 +267,13 @@ export default class EVM {
 
     balanceCheck(req: RequestType): Boolean {
         const balance: BN = this.getBalance(req.id)
-        if(req.id && this.contracts.get(req.id)) {
-            if(this.contracts.get(req.id).balance.gte(req.amount)) {
+        if (req.id && this.contracts.get(req.id)) {
+            if (this.contracts.get(req.id).balance.gte(req.amount)) {
                 this.contracts.get(req.id).balance = this.contracts.get(req.id).balance.sub(req.amount)
                 return true
             }
         } else {
-            if(this.balance.gte(req.amount)) {
+            if (this.balance.gte(req.amount)) {
                 this.balance = this.balance.sub(req.amount)
                 return true
             }
@@ -366,14 +366,14 @@ export default class EVM {
             value
         }
 
-        if(this.LEGACY) {
+        if (this.LEGACY) {
             delete tx["maxPriorityFeePerGas"]
             delete tx["maxFeePerGas"]
             tx.gasPrice = await this.getAdjustedGasPrice()
             tx.type = 0
         }
 
-        if(this.contracts.get(id)) {
+        if (this.contracts.get(id)) {
             const txObject = this.contracts.get(id)?.methods.transfer(to, value)
             tx.data = txObject.encodeABI()
             tx.value = 0
@@ -384,7 +384,7 @@ export default class EVM {
         let signedTx
         try {
             signedTx = await this.account.signTransaction(tx)
-        } catch(err: any) {
+        } catch (err: any) {
             this.error = true
             this.log.error(err.message)
         }
@@ -404,7 +404,7 @@ export default class EVM {
             const gasPrice: number = await this.getGasPrice()
             const adjustedGas: number = Math.floor(gasPrice * 1.25)
             return Math.min(adjustedGas, parseInt(this.MAX_FEE))
-        } catch(err: any) {
+        } catch (err: any) {
             this.error = true
             this.log.error(err.message)
             return 0
@@ -435,7 +435,7 @@ export default class EVM {
             const recalibrateNow = setInterval(() => {
                 this.recalibrateNowActivated = true
 
-                if(this.pendingTxNonces.size === 0 && this.isUpdating === false && this.queuingInProgress === false) {
+                if (this.pendingTxNonces.size === 0 && this.isUpdating === false && this.queuingInProgress === false) {
                     clearInterval(recalibrateNow)
                     this.recalibrateNowActivated = false
                     this.waitingForRecalibration = false

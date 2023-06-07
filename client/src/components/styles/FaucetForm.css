@@ -1,4 +1,4 @@
-*{
+* {
     letter-spacing: .0125em;
 }
 
@@ -27,12 +27,12 @@ a {
     width: 100%;
 }
 
-.box-header > span {
+.box-header>span {
     display: flex;
     justify-content: space-between;
 }
 
-.box-header > span > span {
+.box-header>span>span {
     font-size: 13px;
 }
 
@@ -60,7 +60,7 @@ a {
     align-items: center;
 }
 
-.select-dropdown > img{
+.select-dropdown>img {
     width: 25px;
     height: 25px;
     border-radius: 25px;
@@ -80,7 +80,7 @@ a {
     line-height: 20px;
 }
 
-.rate-limit-text > span {
+.rate-limit-text>span {
     margin-left: 2px;
     font-weight: 500;
 }
@@ -95,7 +95,7 @@ a {
     border-radius: 5px;
 }
 
-.address-input > input {
+.address-input>input {
     background-color: transparent;
     border-style: none;
     color: white;
@@ -116,7 +116,7 @@ a {
     font-size: 10px
 }
 
-.connect-metamask > img {
+.connect-metamask>img {
     width: 25px;
     height: 25px;
 }
@@ -134,13 +134,34 @@ a {
     margin-top: 20px;
 }
 
+.twitter-link {
+    display: flex;
+    align-items: center;
+    color: #333;
+    height: 45px;
+    background-color: rgb(43, 43, 43);
+    margin-bottom: 8px;
+    border-radius: 5px;
+}
+
+.twitter-link>input {
+    background-color: transparent;
+    border-style: none;
+    color: white;
+    outline: none;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    padding: 0 12px;
+}
+
 .button-container {
     display: flex;
     justify-content: space-between;
 }
 
 .send-button {
-    color:white;
+    color: white;
     margin-top: 20px;
     height: 36px;
     width: 100%;
@@ -157,7 +178,7 @@ a {
 }
 
 .send-button-disabled {
-    color:rgba(255, 255, 255, 0.406);
+    color: rgba(255, 255, 255, 0.406);
     margin-top: 20px;
     height: 36px;
     width: 100%;
@@ -176,7 +197,7 @@ a {
 }
 
 .back-button {
-    color:white;
+    color: white;
     margin-top: 10px;
     height: 36px;
     width: 100px;

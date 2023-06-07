@@ -1,9 +1,8 @@
 import { BN } from 'avalanche'
 
 export function calculateBaseUnit(amount: string, decimals: number): BN {
-    for(let i = 0; i < decimals; i++) {
-        amount += "0"
-    }
+
+    amount = (Number(amount) * Math.pow(10, decimals)).toString()
 
     return new BN(amount)
 }

@@ -45,7 +45,7 @@ new RateLimiter(app, [
 ], (req: any, res: any) => {
     const addr = req.body?.address
 
-    if(typeof addr == "string" && addr) {
+    if (typeof addr == "string" && addr) {
         return addr.toUpperCase()
     }
 })
@@ -58,7 +58,7 @@ let evms = new Map<string, EVMInstanceAndConfig>()
 const getChainByID = (chains: ChainType[], id: string): ChainType | undefined => {
     let reply: ChainType | undefined
     chains.forEach((chain: ChainType): void => {
-        if(chain.ID == id) {
+        if (chain.ID == id) {
             reply = chain
         }
     })
@@ -68,7 +68,7 @@ const getChainByID = (chains: ChainType[], id: string): ChainType | undefined =>
 // Populates the missing config keys of the child using the parent's config
 const populateConfig = (child: any, parent: any): any => {
     Object.keys(parent || {}).forEach((key) => {
-        if(!child[key]) {
+        if (!child[key]) {
             child[key] = parent[key]
         }
     })
@@ -78,7 +78,7 @@ const populateConfig = (child: any, parent: any): any => {
 // Setting up instance for EVM chains
 evmchains.forEach((chain: ChainType): void => {
     const chainInstance: EVM = new EVM(chain, process.env[chain.ID] || process.env.PK)
-    
+
     evms.set(chain.ID, {
         config: chain,
         instance: chainInstance
@@ -87,7 +87,7 @@ evmchains.forEach((chain: ChainType): void => {
 
 // Adding ERC20 token contracts to their HOST evm instances
 erc20tokens.forEach((token: ERC20Type, i: number): void => {
-    if(token.HOSTID) {
+    if (token.HOSTID) {
         token = populateConfig(token, getChainByID(evmchains, token.HOSTID))
     }
 
@@ -98,20 +98,21 @@ erc20tokens.forEach((token: ERC20Type, i: number): void => {
 })
 
 // POST request for sending tokens or coins
-router.post('/sendToken', captcha.middleware, async (req: any, res: any) => {
+// router.post('/sendToken', captcha.middleware, async (req: any, res: any) => {
+router.post('/sendToken', async (req: any, res: any) => {
     const address: string = req.body?.address
     const chain: string = req.body?.chain
     const erc20: string | undefined = req.body?.erc20
 
     const evm: EVMInstanceAndConfig = evms.get(chain)!
 
-    if(evm) {
+    if (evm) {
         evm?.instance.sendToken(address, erc20, (data: SendTokenResponse) => {
             const { status, message, txHash } = data
-            res.status(status).send({message, txHash})
+            res.status(status).send({ message, txHash })
         })
     } else {
-        res.status(400).send({message: "Invalid parameters passed!"})
+        res.status(400).send({ message: "Invalid parameters passed!" })
     }
 })
 
@@ -140,7 +141,7 @@ router.get('/getBalance', (req: any, res: any) => {
 
     let balance: BN = evm?.instance.getBalance(erc20)
 
-    if(balance) {
+    if (balance) {
         balance = balance
     } else {
         balance = new BN(0)

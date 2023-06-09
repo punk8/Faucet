@@ -51,7 +51,7 @@ new RateLimiter(app, [
 })
 
 const captcha: VerifyCaptcha = new VerifyCaptcha(app, process.env.CAPTCHA_SECRET!, process.env.V2_CAPTCHA_SECRET!)
-const twitterVerifer: VerifyTwitter = new VerifyTwitter(app)
+const twitterVerifer: VerifyTwitter = new VerifyTwitter(app, process.env.SHARE_URL!, process.env.AT_URL!)
 
 let evms = new Map<string, EVMInstanceAndConfig>()
 

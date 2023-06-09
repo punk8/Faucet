@@ -327,7 +327,7 @@ const FaucetForm = (props: any) => {
         // const share_url = 'https%3A%2F%2Ffaucet.quicknode.com%2Fpolygon%2Fmumbai%3Futm_source%3Dfaucet%26utm_medium%3Dtwitter%26utm_content%3Dsocial-share%26utm_term%3Dmumbai-MATIC'
         const share_url = 'https://twitter.com/Splatter_Proto/status/1663711155896872962'
         // const share_url = 'https://faucet.quicknode.com/polygon/mumbai?utm_source=faucet&utm_medium=twitter&utm_content=social-share&utm_term=mumbai-MATIC'
-        let url = `https://twitter.com/intent/tweet?text=Getting+some+${params.erc20}+for+${params.address}%21&url=${share_url}`
+        let url = `https://twitter.com/intent/tweet?text=Getting+some+${params.erc20}+for+${params.address}%21+%40Splatter_Proto+&url=${share_url}`
         return url
     }
 

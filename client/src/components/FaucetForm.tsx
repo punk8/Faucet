@@ -179,7 +179,6 @@ const FaucetForm = (props: any) => {
         const response: AxiosResponse = await props.axios.get(
             props.config.api.getChainConfigs
         )
-        console.log("updateChainConfig", response)
         setChainConfigs(response?.data?.configs)
     }
 

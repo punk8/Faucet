@@ -62,6 +62,7 @@ export const connectAccount = async (updateAddress: any, showPopup = true) => {
     try {
         window.ethereum.request({ method: 'eth_accounts' }).then(
             async (accounts: any) => {
+                console.log("accounts", accounts)
                 accounts = await handleConnection(accounts, showPopup)
                 console.log("accounts", accounts)
                 updateAddress(accounts[0])
@@ -80,7 +81,7 @@ export const connectAccount = async (updateAddress: any, showPopup = true) => {
 }
 
 async function handleConnection(accounts: any, showPopup: boolean) {
-    if (accounts.length === 0) {
+    if (accounts == undefined || accounts.length === 0) {
         if (showPopup) {
             try {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })

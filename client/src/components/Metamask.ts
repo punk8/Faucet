@@ -85,12 +85,15 @@ async function handleConnection(accounts: any, showPopup: boolean) {
         if (showPopup) {
             try {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+                console.log("first ", accounts)
                 return accounts
             } catch (err) {
+                console.log("error ", accounts)
                 console.log("Request denied!")
             }
         }
     } else {
+        console.log("else ", accounts)
         return accounts
     }
 }

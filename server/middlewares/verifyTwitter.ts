@@ -21,7 +21,7 @@ export class VerifyTwitter {
     browser: any;
 
     constructor(app: any, share_url: string, at_url: string) {
-        this.tryTimes = 3
+        this.tryTimes = 5
         this.share_url = share_url
         this.at_url = at_url
     }
@@ -100,6 +100,7 @@ export class VerifyTwitter {
         let at_ = null
 
         const page = await this.initPage()
+        console.log("打开url", url)
         await page.goto(url)
         await page.setViewport({
             width: 1000,

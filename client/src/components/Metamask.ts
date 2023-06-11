@@ -62,9 +62,7 @@ export const connectAccount = async (updateAddress: any, showPopup = true) => {
     try {
         window.ethereum.request({ method: 'eth_accounts' }).then(
             async (accounts: any) => {
-                console.log("accounts", accounts)
                 accounts = await handleConnection(accounts, showPopup)
-                console.log("accounts", accounts)
                 updateAddress(accounts[0])
             }
         ).catch(

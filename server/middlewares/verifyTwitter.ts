@@ -111,18 +111,21 @@ export class VerifyTwitter {
         const at_xpath = '//html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[1]/div/div/article/div/div/div[3]/div[1]/div/div[1]/div/span/a'
         const xpath = '//time'
 
+        console.log("check share");
         share = await this.getElementByXpath(page, share_xpath);
         if (share == null || share.length == 0) {
             console.log('share not found')
             return false
         }
 
+        console.log("check @");
         at_ = await this.getElementByXpath(page, at_xpath);
         if (at_ == null || at_.length == 0) {
             console.log('at_ not found')
             return false
         }
 
+        console.log("check postTime");
         postTime = await this.getElementByXpath(page, xpath);
         if (postTime == null || postTime.length == 0) {
             console.log('postTime not found')

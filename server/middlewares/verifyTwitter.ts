@@ -59,7 +59,7 @@ export class VerifyTwitter {
             element = await page.$x(xpath);
             if (element == null || element.length == 0) {
                 console.log(`getElement Waiting ${i} seconds...`);
-                await this.sleep(i * 2000);
+                await this.sleep(i * 5000);
             }
         }
         return element

@@ -1,6 +1,6 @@
 {
     "banner": "/banner.webp",
-    "apiBaseEndpointProduction": "/api/",
+    "apiBaseEndpointProduction": "http://faucet-api-nine.vercel.app/api/",
     "apiBaseEndpointDevelopment": "http://faucet-api-nine.vercel.app/api/",
     "apiTimeout": 40000,
     "CAPTCHA": {

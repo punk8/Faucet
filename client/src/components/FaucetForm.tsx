@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
-import { ClipLoader } from "react-spinners"
+import { useEffect, useState } from 'react'
 import Select from 'react-select'
+import { ClipLoader } from "react-spinners"
 
-import './styles/FaucetForm.css'
-import ReCaptcha from './ReCaptcha'
-import FooterBox from './FooterBox'
-import queryString from 'query-string'
-import { DropdownOption } from './types'
-import { connectAccount } from './Metamask'
 import { AxiosResponse } from 'axios'
+import queryString from 'query-string'
 import configurations from '../config.json'
+import FooterBox from './FooterBox'
+import { connectAccount } from './Metamask'
+import ReCaptcha from './ReCaptcha'
+import './styles/FaucetForm.css'
+import { DropdownOption } from './types'
 
 const FaucetForm = (props: any) => {
     const [chain, setChain] = useState<number | null>(null)
@@ -179,6 +179,7 @@ const FaucetForm = (props: any) => {
         const response: AxiosResponse = await props.axios.get(
             props.config.api.getChainConfigs
         )
+        console.log("updateChainConfig", response)
         setChainConfigs(response?.data?.configs)
     }
 

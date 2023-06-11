@@ -18,6 +18,7 @@ export class VerifyTwitter {
     tryTimes: number
     share_url: string
     at_url: string
+    browser: any;
 
     constructor(app: any, share_url: string, at_url: string) {
         this.tryTimes = 3
@@ -25,33 +26,61 @@ export class VerifyTwitter {
         this.at_url = at_url
     }
     async initPage(): Promise<any> {
-        let options = {}
-        if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-            options = {
-                args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
-                defaultViewport: chrome.defaultViewport,
-                executablePath: await chrome.executablePath,
-                headless: true,
-                ignoreHTTPSErrors: true,
-            };
-        } else {
-            options = {
-                headless: true,
-                args: ['--no-sandbox',
-                    '--disable-setuid-sandbox',
-                    // '–disable-gpu',
-                    // '–disable-dev-shm-usage',
-                    // '–no-first-run',
-                    // '–no-zygote',
-                    '–single-process'
-                ]
-            }
-        }
-        const browser = await puppeteer.launch(options);
-        const page = await browser.newPage();
+        await this.openBrowser();
+        const page = await this.browser.newPage();
         page.setUserAgent("Mozilla/5.0 (Windows NT 10.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36");
+
+        //需要先设置 setRequestInterception 为 true
+        //因为默认情况下 request 只可读
+        await page.setRequestInterception(true);
+        page.on("request", (req: any) => {
+            if (
+                req.resourceType() == "stylesheet" ||
+                req.resourceType() == "font" ||
+                req.resourceType() == "image"
+            ) {
+                req.abort();
+            } else {
+                req.continue();
+            }
+        });
+
         return page
     }
+    async openBrowser(): Promise<any> {
+        if (!this.browser) {
+            let options = {}
+            if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+                options = {
+                    args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+                    defaultViewport: chrome.defaultViewport,
+                    executablePath: await chrome.executablePath,
+                    headless: true,
+                    ignoreHTTPSErrors: true,
+                };
+            } else {
+                options = {
+                    headless: true,
+                    args: ['--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        // '–disable-gpu',
+                        // '–disable-dev-shm-usage',
+                        // '–no-first-run',
+                        // '–no-zygote',
+                        '–single-process'
+                    ]
+                }
+            }
+            this.browser = await puppeteer.launch(options);
+            this.browser.on("disconnected", () => {
+                console.log("浏览器断开连接");
+                //断开后设为 falsy 值
+                this.browser = null;
+            });
+        } else {
+            console.log("浏览器已经打开，不需要重新打开");
+        }
+    };
 
     async getElementByXpath(page: any, xpath: string): Promise<any> {
         let element = null
@@ -59,7 +88,7 @@ export class VerifyTwitter {
             element = await page.$x(xpath);
             if (element == null || element.length == 0) {
                 console.log(`getElement Waiting ${i} seconds...`);
-                await this.sleep(i * 5000);
+                await this.sleep(i * 1000);
             }
         }
         return element

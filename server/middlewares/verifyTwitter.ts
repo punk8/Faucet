@@ -1,5 +1,15 @@
 const axios = require('axios')
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer');
+
+let chrome: any;
+let puppeteer: any;
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+    chrome = require("chrome-aws-lambda");
+    puppeteer = require("puppeteer-core");
+} else {
+    puppeteer = require("puppeteer");
+}
 
 export class VerifyTwitter {
 
@@ -15,16 +25,27 @@ export class VerifyTwitter {
         this.at_url = at_url
     }
     async initPage(): Promise<any> {
-        const options = {
-            headless: true,
-            args: ['--no-sandbox',
-                '--disable-setuid-sandbox',
-                // '–disable-gpu',
-                // '–disable-dev-shm-usage',
-                // '–no-first-run',
-                // '–no-zygote',
-                '–single-process'
-            ]
+        let options = {}
+        if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+            options = {
+                args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+                defaultViewport: chrome.defaultViewport,
+                executablePath: await chrome.executablePath,
+                headless: true,
+                ignoreHTTPSErrors: true,
+            };
+        } else {
+            options = {
+                headless: true,
+                args: ['--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    // '–disable-gpu',
+                    // '–disable-dev-shm-usage',
+                    // '–no-first-run',
+                    // '–no-zygote',
+                    '–single-process'
+                ]
+            }
         }
         const browser = await puppeteer.launch(options);
         const page = await browser.newPage();

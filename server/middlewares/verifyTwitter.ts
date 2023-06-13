@@ -185,9 +185,9 @@ export class VerifyTwitter {
     verify(time: any, share_link: string, at_element: string): boolean {
         const date = new Date(time)
         // 判断时间
-        // if (date != new Date()) { // 不是当天
-        //     return false
-        // }
+        if (date != new Date()) { // 不是当天
+            return false
+        }
 
         // 判断@对象
         if (at_element != this.at_url) {
@@ -199,7 +199,7 @@ export class VerifyTwitter {
         }
 
         console.log('verify done!')
-        return false
+        return true
 
     }
 }

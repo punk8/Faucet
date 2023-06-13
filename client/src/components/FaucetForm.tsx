@@ -324,8 +324,8 @@ const FaucetForm = (props: any) => {
             erc20: chainConfigs[token!]?.TOKEN,
             address: address
         }
-        const share_url = configurations.SHARE_URL
-        const at_ = configurations.AT_
+        const share_url = props.config.SHARE_URL
+        const at_ = props.config.AT_
         let url = `https://twitter.com/intent/tweet?text=Getting+some+${params.erc20}+for+${params.address}%21+%40${at_}+&url=${share_url}`
         return url
     }

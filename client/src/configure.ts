@@ -16,5 +16,7 @@ export const config = {
     SITE_KEY: configurations.CAPTCHA.siteKey,
     V2_SITE_KEY: configurations.CAPTCHA.v2siteKey,
     ACTION: configurations.CAPTCHA.action,
-    banner: configurations.banner
+    banner: configurations.banner,
+    SHARE_URL: configurations.SHARE_URL,
+    AT_: configurations.AT_
 }

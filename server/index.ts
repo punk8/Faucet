@@ -25,7 +25,9 @@ dotenv.config()
 const app: any = express()
 const router: any = express.Router()
 
-app.use(express.static(path.join(path.resolve(__dirname, '..'), "client/public")))
+const project_path = path.resolve(__dirname, '..')
+
+app.use(express.static(path.join(project_path, "client/public")))
 app.use(cors())
 app.use(parseURI)
 app.use(parseBody)
@@ -179,7 +181,7 @@ app.get('/ip', (req: any, res: any) => {
 })
 
 app.get('*', async (req: any, res: any) => {
-    res.sendFile(path.join(path.resolve(__dirname, '..'), "client/public", "index.html"))
+    res.sendFile(path.join(project_path, "client/public", "index.html"))
 })
 
 app.listen(process.env.PORT || 8000, () => {
